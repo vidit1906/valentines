@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Bootstrap CSS CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Inline Styles -->
+    <style>
+      /* Fix navbar at the top */
+      .navbar.fixed-top {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1050;
+      }
+      /* Add top padding to body so content isn't hidden behind fixed navbar */
+      body {
+        padding-top: 70px; /* Adjust this value based on your navbar's height */
+      }
+
+      /* Modal container styling */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1050;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Ensure modal images maintain their original aspect ratio */
+      #modalImg {
+        max-width: 90%;
+        max-height: 90%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+    </style>
+
+    <!-- Your custom CSS file (if any) -->
+    <link rel="stylesheet" href="style.css" />
+
+    <title>Happy Valentine's Day!</title>
+  </head>
+  <body>
+    <!-- Navigation with Bootstrap classes and fixed-top to stay at the top -->
+    <nav class="navbar navbar-expand-lg bg-transparent fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">Home</a>
+        <button id="viewGalleryBtn" class="btn btn-outline-light">
+          A trip down memory lane
+        </button>
+      </div>
+    </nav>
+
+    <!-- Flower (Bouquet) Section -->
+    <div class="flower-container">
+      <div class="flower">
+        <div class="flower-pp">
+          <div class="flower_l"></div>
+          <div class="f">
+            <div class="leaf leaf--1"></div>
+            <div class="leaf leaf--2"></div>
+            <div class="leaf leaf--3"></div>
+            <div class="leaf leaf--4"></div>
+            <div class="leaf leaf--5"></div>
+            <div class="leaf leaf--6"></div>
+            <div class="leaf leaf--7"></div>
+            <div class="leaf leaf--8 flower__fall-down--yellow"></div>
+          </div>
+        </div>
+
+        <div class="flower-pp flower-pp--2">
+          <div class="flower_l"></div>
+          <div class="f">
+            <div class="leaf leaf--1"></div>
+            <div class="leaf leaf--2"></div>
+            <div class="leaf leaf--3"></div>
+            <div class="leaf leaf--4"></div>
+            <div class="leaf leaf--5"></div>
+            <div class="leaf leaf--6"></div>
+            <div class="leaf leaf--7"></div>
+            <div class="leaf leaf--8 flower__fall-down--pink"></div>
+          </div>
+        </div>
+
+        <div class="flower-pp flower-pp--3">
+          <div class="flower_l"></div>
+          <div class="f">
+            <div class="leaf leaf--1"></div>
+            <div class="leaf leaf--2"></div>
+            <div class="leaf leaf--3"></div>
+            <div class="leaf leaf--4"></div>
+            <div class="leaf leaf--5"></div>
+            <div class="leaf leaf--6"></div>
+            <div class="leaf leaf--7"></div>
+            <div class="leaf leaf--8 flower__fall-down--purple"></div>
+          </div>
+        </div>
+        <div class="flower__glass"></div>
+      </div>
+    </div>
+
+    <!-- Heartfelt Note -->
+    <div class="note">
+      <p>
+        We couldn't meet bachu but doesn't mean you dont get flowers hehe.
+        Happy Valentine's Khushi Kaushik USAAAA. Ok bas I love youuuu💋💋💋💋
+      </p>
+    </div>
+
+    <!-- Modal Structure for Gallery -->
+    <div id="modal" class="modal">
+      <span id="closeBtn" class="close">&times;</span>
+      <img id="modalImg" class="modal-content" src="" alt="Modal Photo" />
+      <button id="nextBtn" class="next btn btn-light mt-3">Next</button>
+    </div>
+
+    <!-- JavaScript for Modal Functionality -->
+    <script>
+      // Array of image sources (img1–img4 are .jpg; img5–img9 are .jpeg)
+      const imageSources = [
+        "images/img1.jpg",
+        "images/img2.jpg",
+        "images/img3.jpg",
+        "images/img4.jpg",
+        "images/img5.jpeg",
+        "images/img6.jpeg",
+        "images/img7.jpeg",
+        "images/img8.jpeg",
+        "images/img9.jpeg"
+      ];
+
+      let currentIndex = 0;
+
+      const modal = document.getElementById("modal");
+      const modalImg = document.getElementById("modalImg");
+      const nextBtn = document.getElementById("nextBtn");
+      const closeBtn = document.getElementById("closeBtn");
+      const viewGalleryBtn = document.getElementById("viewGalleryBtn");
+
+      // Open modal with the first image when "View Gallery" is clicked
+      viewGalleryBtn.addEventListener("click", () => {
+        currentIndex = 0;
+        openModal();
+      });
+
+      function openModal() {
+        modal.style.display = "flex"; // Use flex to center modal content
+        modalImg.src = imageSources[currentIndex];
+      }
+
+      nextBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % imageSources.length;
+        modalImg.src = imageSources[currentIndex];
+      });
+
+      closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+      // Close modal when clicking outside the image
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    </script>
+
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Gallery - Our Memories</title>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+    </nav>
+
+    <!-- Gallery Section -->
+    <div class="gallery-container">
+      <h1>Our Memories</h1>
+      <div class="gallery-grid">
+        <img src="images/img1.jpg" alt="Photo 1" data-index="0" class="gallery-img" />
+        <img src="images/img2.jpg" alt="Photo 2" data-index="1" class="gallery-img" />
+        <img src="images/img3.jpg" alt="Photo 3" data-index="2" class="gallery-img" />
+        <img src="images/img4.jpg" alt="Photo 4" data-index="3" class="gallery-img" />
+        <img src="images/img5.jpeg" alt="Photo 5" data-index="4" class="gallery-img" />
+        <img src="images/img6.jpeg" alt="Photo 6" data-index="5" class="gallery-img" />
+        <img src="images/img7.jpeg" alt="Photo 7" data-index="6" class="gallery-img" />
+        <img src="images/img8.jpeg" alt="Photo 8" data-index="7" class="gallery-img" />
+        <img src="images/img9.jpeg" alt="Photo 9" data-index="8" class="gallery-img" />
+      </div>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="modal" class="modal">
+      <span id="closeBtn" class="close">&times;</span>
+      <img id="modalImg" class="modal-content" src="" alt="Modal Photo" />
+      <button id="nextBtn" class="next">Next</button>
+    </div>
+
+    <!-- JavaScript to handle modal functionality -->
+    <script>
+      const modal = document.getElementById("modal");
+      const modalImg = document.getElementById("modalImg");
+      const nextBtn = document.getElementById("nextBtn");
+      const closeBtn = document.getElementById("closeBtn");
+      const galleryImages = document.querySelectorAll(".gallery-img");
+      
+      // Array to hold image sources
+      const imageSources = [];
+      galleryImages.forEach((img, index) => {
+        imageSources.push(img.src);
+        img.addEventListener("click", () => {
+          currentIndex = index;
+          openModal();
+        });
+      });
+      
+      let currentIndex = 0;
+      
+      function openModal() {
+        modal.style.display = "block";
+        modalImg.src = imageSources[currentIndex];
+      }
+      
+      nextBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % imageSources.length;
+        modalImg.src = imageSources[currentIndex];
+      });
+      
+      closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+      
+      // Optional: close modal when clicking outside the image
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
