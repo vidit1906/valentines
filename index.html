@@ -57,26 +57,26 @@
   </head>
   <body>
     <!-- Audio element that autoplays and loops without controls -->
-<!-- Audio element initially muted -->
-<audio id="bgAudio" autoplay loop muted style="display: none;">
-  <source src="images/allineed.mp3" type="audio/mpeg" />
-  Your browser does not support the audio element.
-</audio>
+    <!-- Audio element initially muted -->
+    <audio id="bgAudio" autoplay loop muted style="display: none;">
+      <source src="images/allineed.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
 
-<script>
-  // Listen for a user interaction (click anywhere on the document)
-  document.addEventListener('click', function enableAudio() {
-    const audio = document.getElementById('bgAudio');
-    if (audio.muted) {
-      audio.muted = false;
-      audio.play().catch(error => {
-        console.error("Audio play failed:", error);
+    <script>
+      // Listen for a user interaction (click anywhere on the document) to unmute audio
+      document.addEventListener("click", function enableAudio() {
+        const audio = document.getElementById("bgAudio");
+        if (audio.muted) {
+          audio.muted = false;
+          audio.play().catch((error) => {
+            console.error("Audio play failed:", error);
+          });
+        }
+        // Remove the event listener once audio is enabled
+        document.removeEventListener("click", enableAudio);
       });
-    }
-    // Remove the event listener once audio is enabled
-    document.removeEventListener('click', enableAudio);
-  });
-</script>
+    </script>
 
     <!-- Navigation with Bootstrap classes and fixed-top to stay at the top -->
     <nav class="navbar navbar-expand-lg bg-transparent fixed-top">
@@ -148,10 +148,11 @@
     <div id="modal" class="modal">
       <span id="closeBtn" class="close">&times;</span>
       <img id="modalImg" class="modal-content" src="" alt="Modal Photo" />
-      <button id="nextBtn" class="next btn btn-light mt-3">Next</button>
+      <!-- Pause/Resume button for slideshow -->
+      <button id="pauseBtn" class="btn btn-light mt-3">Pause</button>
     </div>
 
-    <!-- JavaScript for Modal Functionality -->
+    <!-- JavaScript for Modal Functionality and Slideshow -->
     <script>
       // Array of image sources (img1–img4 are .jpg; img5–img9 are .jpeg)
       const imageSources = [
@@ -167,37 +168,63 @@
       ];
 
       let currentIndex = 0;
+      let slideInterval;
+      let isPaused = false;
 
       const modal = document.getElementById("modal");
       const modalImg = document.getElementById("modalImg");
-      const nextBtn = document.getElementById("nextBtn");
       const closeBtn = document.getElementById("closeBtn");
       const viewGalleryBtn = document.getElementById("viewGalleryBtn");
+      const pauseBtn = document.getElementById("pauseBtn");
 
-      // Open modal with the first image when "View Gallery" is clicked
-      viewGalleryBtn.addEventListener("click", () => {
-        currentIndex = 0;
-        openModal();
-      });
-
-      function openModal() {
-        modal.style.display = "flex"; // Use flex to center modal content
-        modalImg.src = imageSources[currentIndex];
+      // Function to start the slideshow
+      function startSlideShow() {
+        slideInterval = setInterval(() => {
+          currentIndex = (currentIndex + 1) % imageSources.length;
+          modalImg.src = imageSources[currentIndex];
+        }, 2500);
       }
 
-      nextBtn.addEventListener("click", () => {
-        currentIndex = (currentIndex + 1) % imageSources.length;
+      // Function to stop the slideshow
+      function stopSlideShow() {
+        clearInterval(slideInterval);
+      }
+
+      // Open modal with the first image and start slideshow
+      viewGalleryBtn.addEventListener("click", () => {
+        currentIndex = 0;
+        modal.style.display = "flex"; // Use flex to center modal content
         modalImg.src = imageSources[currentIndex];
+        // Reset slideshow state
+        isPaused = false;
+        pauseBtn.textContent = "Pause";
+        startSlideShow();
       });
 
+      // Toggle pause/resume on pause button click
+      pauseBtn.addEventListener("click", () => {
+        if (!isPaused) {
+          stopSlideShow();
+          isPaused = true;
+          pauseBtn.textContent = "Resume";
+        } else {
+          startSlideShow();
+          isPaused = false;
+          pauseBtn.textContent = "Pause";
+        }
+      });
+
+      // Close modal and stop slideshow when close button is clicked
       closeBtn.addEventListener("click", () => {
         modal.style.display = "none";
+        stopSlideShow();
       });
 
-      // Close modal when clicking outside the image
+      // Close modal and stop slideshow when clicking outside the image
       modal.addEventListener("click", (event) => {
         if (event.target === modal) {
           modal.style.display = "none";
+          stopSlideShow();
         }
       });
     </script>
